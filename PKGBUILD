@@ -1,7 +1,7 @@
 # PKGBUILD
 
 pkgname=StK
-pkgver=1.0
+pkgver=
 pkgrel=1
 pkgdesc="StK Terminal Emulator"
 arch=('any')
