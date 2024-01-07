@@ -1,1 +1,0 @@
-StK Terminal Emulator
