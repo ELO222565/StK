@@ -9,7 +9,7 @@ url="https://github.com/ELO222565/StK"
 license=('CC BY-NC')
 depends=('python')
 
-source=("$pkgname-$pkgver.tar.xz::https://github.com/StK/releases/download/cool/StK-.tar.xz")
+source=("$pkgname-$pkgver.tar.xz::https://github.com/StK/releases/tag/cool/StK-.tar.xz")
 
 build() {
     cd "$pkgname-$pkgver"
