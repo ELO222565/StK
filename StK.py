@@ -1,9 +1,9 @@
-import subprocess
 import os
 import sys
 import time
 import errno
 import signal
+import webbrowser
 from datetime import datetime
 
 FILE_MODE = 0o777
@@ -19,7 +19,6 @@ LOG_FILE = "logs/Hist.log"
 block_mask = None
 orig_mask = None
 signal_received = False
-
 
 def check_usage():
     if len(sys.argv) != 1:
@@ -59,7 +58,7 @@ def prompt():
 
 
 def prompt_help():
-    print("\nStK shell(BASH), version 1.0.1\n"
+    print("\nStK Shell, version 1.1\n"
           "Supported internal commands are: 'cd', ':q', 'help'\n"
           "Pipes are supported but at most there can be 19 pipe(20 processes)\n"
           "Ex. 'ls -la | grep file'\n"
@@ -295,10 +294,9 @@ def clean_up(input_buffer, tokens, argv, sub_argv, single_command, number_of_tok
 
 
 def clean_tokens(tokens):
-    for i in range(MAX_TOKEN_NUM):
+    for i in range(min(MAX_TOKEN_NUM, len(tokens))):
         if tokens[i] is not None:
             tokens[i] = None
-
 
 def logger_command(command, child_pid):
     time_str = current_time_string()
@@ -307,9 +305,11 @@ def logger_command(command, child_pid):
 
     try:
         buffer = open_file(time_str, buffer)
-        write_to_file(fd, time_str, buffer, child_pid, command)
+        if buffer is not None:
+            write_to_file(fd, time_str, buffer, child_pid, command)
     finally:
-        close_file(fd)
+        if fd is not None:
+            close_file(fd)
 
 
 def current_time_string():
@@ -329,23 +329,24 @@ def tidy_time_str(time_str):
 def open_file(time_str, buffer):
     try:
         fd = os.open(LOG_FILE, os.O_CREAT | os.O_WRONLY | os.O_APPEND)
-        bytes_written = os.write(fd, f"Time: {time_str}\nCommand: {buffer}\n")
+        if fd < 0:
+            raise OSError("Failed to open file")
+        bytes_written = os.write(fd, f"Time: {time_str}\nCommand: {buffer}\n".encode())
         return fd
     except OSError as e:
         print(f"Error opening file: {e}")
         sys.exit(1)
 
-
 def write_to_file(fd, time_str, buffer, child_pid, command):
     try:
-        bytes_written = os.write(fd, f"PID: {child_pid}\nCommand: {command}\n")
-        if bytes_written < 0:
-            sys.stderr.write("Error while formatting log message\n")
-            sys.exit(errno.EINVAL)
+        if fd is not None:
+            bytes_written = os.write(fd, f"PID: {child_pid}\nCommand: {command}\n".encode())
+            if bytes_written < 0:
+                sys.stderr.write("Error while formatting log message\n")
+                sys.exit(errno.EINVAL)
     except OSError as e:
         sys.stderr.write(f"Error while writing to log file: {e}\n")
         sys.exit(errno.EINVAL)
-
 
 def close_file(fd):
     try:
@@ -435,6 +436,5 @@ def main():
     clean_up(input_buffer, tokens, argv, sub_argv, single_command, number_of_token)
     print("\nBYE")
 
-
 if __name__ == "__main__":
-    open_new_terminal()
+    main()
