@@ -1,7 +1,9 @@
 # StK Shell (Python Implementation)
 
-# StK 1.0.1!!! Log:
-- made it to open its own window so it likely wont crash so much
+# StK 1.1!!! Log:
+- All Issues fixed
+- Doesn't crash after typing one command
+- First Solid Issueless Version
 
 ## Signal Handling
 - The program sets up signal handlers for `SIGINT`, `SIGTSTP`, and `SIGQUIT` to handle interruptions and termination gracefully.
