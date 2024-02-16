@@ -1,3 +1,4 @@
+import subprocess
 import os
 import sys
 import time
@@ -58,7 +59,7 @@ def prompt():
 
 
 def prompt_help():
-    print("\nStK shell(BASH), version 1.0\n"
+    print("\nStK shell(BASH), version 1.0.1\n"
           "Supported internal commands are: 'cd', ':q', 'help'\n"
           "Pipes are supported but at most there can be 19 pipe(20 processes)\n"
           "Ex. 'ls -la | grep file'\n"
@@ -436,4 +437,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    open_new_terminal()
