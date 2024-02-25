@@ -1,9 +1,29 @@
 # StK Shell (Python Implementation)
 
+# WARNING!!! You Cannot Use StK On Windows Or Any OS That Doesn't Use Bash
+
 # StK 1.1!!! Log:
 - All Issues fixed
 - Doesn't crash after typing one command
 - First Solid Issueless Version
+
+## Linux Usage
+- Python 3.8 or higher
+- webbrowser library (`pip3 install webbrowser`)
+
+## Opening StK
+- Clone It With Git:
+```shell
+git clone https:/github.com/SFYMMIK/StK.git
+```
+- Go To StK's Directory:
+```shell
+cd ~/StK
+```
+- Open It:
+```shell
+python3 StK.py
+```
 
 ## Signal Handling
 - The program sets up signal handlers for `SIGINT`, `SIGTSTP`, and `SIGQUIT` to handle interruptions and termination gracefully.
